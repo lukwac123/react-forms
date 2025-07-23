@@ -33,7 +33,7 @@ class Checkout extends Component {
                                 <MyInput type="text" name="firstname" label="Imię" className="form-control" value={this.state.firstname} onChange={this.changeHandler} />
                             </Col>
                             <Col xs={12} md={4}>
-                                <MyInput type="text" name="lastname" label="Nazwisko" className="form-control" value={this.state.lastname} />
+                                <MyInput type="text" name="lastname" label="Nazwisko" className="form-control" value={this.state.lastname} onChange={this.changeHandler} />
                             </Col>
                         </Row>
                     </div>
@@ -41,8 +41,16 @@ class Checkout extends Component {
                 <Row>
                     <Col>
                         <h2>Podane dane:</h2>
-                        Imię:
-                        {this.state.firstname === "" ? "N/A" : this.state.firstname}
+                        <ul className="list-group">
+                            <li className="list-group-item">
+                                Imię:
+                                {this.state.firstname === "" ? "N/A" : this.state.firstname}
+                            </li>
+                            <li className="list-group-item">
+                                Nazwisko:
+                                {this.state.lastname === "" ? "N/A" : this.state.lastname}
+                            </li>
+                        </ul>
                     </Col>
                 </Row>
             </Container>
