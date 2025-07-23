@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Row, Col, Container } from "react-bootstrap";
+import MyInput from "../components/forms/MyInput";
 
 class Checkout extends Component {
     constructor(props) {
@@ -10,22 +11,22 @@ class Checkout extends Component {
         return (
             <Container>
                 <form>
-                    <Row>
-                        <Col xs={12}>
-                            <h1>Witamy przy kasie !</h1>
-                            <h2>Podaj dane do wysyłki:</h2>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col xs={12} md={4}>
-                            <p>Imię:</p>
-                            <input type="text" name="firstname" />
-                        </Col>
-                        <Col xs={12} md={4}>
-                            <p>Nazwisko:</p>
-                            <input type="text" name="lastname" />
-                        </Col>
-                    </Row>
+                    <div className="form-group">
+                        <Row>
+                            <Col xs={12}>
+                                <h1>Witamy przy kasie !</h1>
+                                <h2>Podaj dane do wysyłki:</h2>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col xs={12} md={4}>
+                                <MyInput type="text" name="firstname" label="Imię" className="form-control" />
+                            </Col>
+                            <Col xs={12} md={4}>
+                                <MyInput type="text" name="lastname" label="Nazwisko" className="form-control" />
+                            </Col>
+                        </Row>
+                    </div>
                 </form>
             </Container>
         );
