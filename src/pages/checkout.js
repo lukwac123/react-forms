@@ -12,7 +12,9 @@ class Checkout extends Component {
     }
 
         changeHandler = event => {
-        this.setState({ firstname: event.target.value });
+            let inputName = event.target.name;
+            let inputValue = event.target.value;
+        this.setState({ [inputName]: inputValue });
     };
 
     render(){
