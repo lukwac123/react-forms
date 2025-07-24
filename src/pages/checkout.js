@@ -1,8 +1,16 @@
 import React, { Component } from "react";
 import { Row, Col, Container } from "react-bootstrap";
 import MyInput from "../components/forms/MyInput";
+import MySelect from "../components/forms/MySelect";
 
 class Checkout extends Component {
+    paymentOption = [
+        {id: "-", name: "----"},
+        {id: "pp", name: "PayPal"},
+        {id: "stripe", name: "Stripe"},
+        {id: "cc", name: "Karta kredytowa"}
+    ];
+
     constructor(props) {
         super(props);
         this.state = {
@@ -10,7 +18,8 @@ class Checkout extends Component {
             lastname: "",
             street: "",
             zip: "",
-            city: ""
+            city: "",
+            paymentType: ""
         };
     }
 
@@ -47,6 +56,9 @@ class Checkout extends Component {
                             <Col xs={12} md={4}>
                                 <MyInput type="text" name="city" label="Miasto" className="form-control" value={this.state.city} onChange={this.changeHandler} />
                             </Col>
+                            <Col xs={12} md={4}>
+                                <MySelect name="paymentType" label="Rodzaj płatności" className="form-select" onChange={this.changeHandler} value={this.state.paymentType} options={this.paymentOption} />
+                            </Col>
                         </Row>
                     </div>
                 </form>
@@ -73,6 +85,10 @@ class Checkout extends Component {
                             <li className="list-group-item">
                                 Miasto:
                                 {this.state.city === "" ? " N/A" : this.state.city}
+                            </li>
+                            <li className="list-group-item">
+                                Rodzaj płatności:
+                                {this.state.paymentType === "" ? " N/A" : this.paymentOption.find(opt => opt.id === this.state.paymentType)?.name || this.state.paymentType}
                             </li>
                         </ul>
                     </Col>
