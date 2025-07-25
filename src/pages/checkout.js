@@ -22,14 +22,43 @@ class Checkout extends Component {
             city: "",
             paymentType: "",
             comment: "",
-            gift: false
+            gift: false,
+            errors: {
+                firstnameError: "",
+                lastnameError: "",
+                streetError: "",
+                zipError: "",
+                cityError: "",
+                paymentTypeError: "",
+                commentError: "",
+                giftError: ""
+            }
         };
     }
 
         changeHandler = event => {
             let inputName = event.target.name;
             let inputValue = event.target.type === "checkbox" ? event.target.checked : event.target.value;
-            this.setState({ [inputName]: inputValue });
+            this.setState(prevState => ({
+                ...prevState,
+                [inputName]: inputValue
+            }));
+
+            if (inputName === "firstname") {
+                if (inputValue.length < 2) {
+                    this.setState(prevState => ({
+                        errors: {
+                            ...prevState.errors, firstnameError: "Imię powinno mieć co najmniej 2 znaki"
+                        }
+                    }));
+                } else {
+                    this.setState(prevState => ({
+                        errors: {
+                            ...prevState.errors, firstnameError: ""
+                        }
+                    }));
+                }
+            }
 
     };
 
@@ -46,10 +75,10 @@ class Checkout extends Component {
                         </Row>
                         <Row>
                             <Col xs={12} md={4}>
-                                <MyInput type="text" name="firstname" label="Imię" className="form-control" value={this.state.firstname} onChange={this.changeHandler} />
+                                <MyInput type="text" name="firstname" label="Imię" className="form-control" value={this.state.firstname} onChange={this.changeHandler} error={this.state.errors.firstnameError}/>
                             </Col>
                             <Col xs={12} md={4}>
-                                <MyInput type="text" name="lastname" label="Nazwisko" className="form-control" value={this.state.lastname} onChange={this.changeHandler} />
+                                <MyInput type="text" name="lastname" label="Nazwisko" className="form-control" value={this.state.lastname} onChange={this.changeHandler} error={this.state.errors.lastnameError}/>
                             </Col>
                             <Col xs={12} md={4}>
                                 <MyInput type="text" name="street" label="Ulica i numer domu" className="form-control" value={this.state.street} onChange={this.changeHandler} />
