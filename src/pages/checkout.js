@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Row, Col, Container } from "react-bootstrap";
 import MyInput from "../components/forms/MyInput";
 import MySelect from "../components/forms/MySelect";
+import MyTextArea from "../components/forms/MyTextArea";
 
 class Checkout extends Component {
     paymentOption = [
@@ -19,7 +20,8 @@ class Checkout extends Component {
             street: "",
             zip: "",
             city: "",
-            paymentType: ""
+            paymentType: "",
+            comment: ""
         };
     }
 
@@ -59,6 +61,9 @@ class Checkout extends Component {
                             <Col xs={12} md={4}>
                                 <MySelect name="paymentType" label="Rodzaj płatności" className="form-select" onChange={this.changeHandler} value={this.state.paymentType} options={this.paymentOption} />
                             </Col>
+                            <Col xs={12} md={4}>
+                                <MyTextArea name="comment" label="Komentarz" className="form-control" onChange={this.changeHandler} value={this.state.comment} />
+                            </Col>
                         </Row>
                     </div>
                 </form>
@@ -89,6 +94,10 @@ class Checkout extends Component {
                             <li className="list-group-item">
                                 Rodzaj płatności:
                                 {this.state.paymentType === "" ? " N/A" : this.paymentOption.find(opt => opt.id === this.state.paymentType)?.name || this.state.paymentType}
+                            </li>
+                            <li className="list-group-item">
+                                Komentarz:
+                                {this.state.comment === "" ? " N/A" : this.state.comment}
                             </li>
                         </ul>
                     </Col>
