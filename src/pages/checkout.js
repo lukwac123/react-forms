@@ -36,36 +36,81 @@ class Checkout extends Component {
         };
     }
 
-        changeHandler = event => {
-            let inputName = event.target.name;
-            let inputValue = event.target.type === "checkbox" ? event.target.checked : event.target.value;
-            this.setState(prevState => ({
-                ...prevState,
-                [inputName]: inputValue
-            }));
-
-            if (inputName === "firstname") {
-                if (inputValue.length < 2) {
-                    this.setState(prevState => ({
-                        errors: {
-                            ...prevState.errors, firstnameError: "Imię powinno mieć co najmniej 2 znaki"
-                        }
-                    }));
-                } else {
-                    this.setState(prevState => ({
-                        errors: {
-                            ...prevState.errors, firstnameError: ""
-                        }
-                    }));
-                }
-            }
-
+    changeHandler = event => {
+        let inputName = event.target.name;
+        let inputValue = event.target.type === "checkbox" ? event.target.checked : event.target.value;
+        this.setState(prevState => ({
+            ...prevState,
+            [inputName]: inputValue
+        }));
     };
+
+    submissionHandler = (event) => {
+        event.preventDefault();
+
+        const errors = {};
+        let errorFound = false;
+
+        if (this.state.firstname.length < 2) {
+            errors.firstnameError = "Imię powinno mieć co najmniej 2 znaki";
+            errorFound = true;
+        } else {
+            errors.firstnameError = "";
+        }
+
+        if (this.state.lastname.length < 2) {
+            errors.lastnameError = "Nazwisko powinno mieć co najmniej 2 znaki";
+            errorFound = true;
+        } else {
+            errors.lastnameError = "";
+        }
+
+        if (this.state.street.length < 3) {
+            errors.streetError = "Podaj poprawną nazwę ulicy";
+            errorFound = true;
+        } else {
+        errors.streetError = "";
+        }
+
+        if (!/^\d{2}-\d{3}$/.test(this.state.zip)) {
+            errors.zipError = "Niepoprawny kod pocztowy (format XX-XXX)";
+            errorFound = true;
+        } else {
+            errors.zipError = "";
+        }
+
+        if (this.state.city.length < 2) {
+            errors.cityError = "Miasto jest wymagane";
+            errorFound = true;
+        } else {
+            errors.cityError = "";
+        }
+
+        if (!this.state.paymentType || this.state.paymentType === "----") {
+            errors.paymentTypeError = "Wybierz sposób płatności";
+            errorFound = true;
+        } else {
+            errors.paymentTypeError = "";
+        }
+        
+        this.setState(prevState => ({
+            ...prevState,
+            errors: {
+                ...prevState.errors,
+                ...errors
+            }
+        }));
+
+        if (!errorFound) {
+            console.log("Formularz poprawny. Dane do wysłania:");
+            console.log(this.state);
+        }
+    }
 
     render(){
         return (
             <Container>
-                <form>
+                <form onSubmit={this.submissionHandler}>
                     <div className="form-group">
                         <Row>
                             <Col xs={12}>
@@ -81,22 +126,27 @@ class Checkout extends Component {
                                 <MyInput type="text" name="lastname" label="Nazwisko" className="form-control" value={this.state.lastname} onChange={this.changeHandler} error={this.state.errors.lastnameError}/>
                             </Col>
                             <Col xs={12} md={4}>
-                                <MyInput type="text" name="street" label="Ulica i numer domu" className="form-control" value={this.state.street} onChange={this.changeHandler} />
+                                <MyInput type="text" name="street" label="Ulica i numer domu" className="form-control" value={this.state.street} onChange={this.changeHandler} error={this.state.errors.streetError} />
                             </Col>
                             <Col xs={12} md={4}>
-                                <MyInput type="text" name="zip" label="Kod pocztowy" className="form-control" value={this.state.zip} onChange={this.changeHandler} />
+                                <MyInput type="text" name="zip" label="Kod pocztowy" className="form-control" value={this.state.zip} onChange={this.changeHandler} error={this.state.errors.zipError} />
                             </Col>
                             <Col xs={12} md={4}>
-                                <MyInput type="text" name="city" label="Miasto" className="form-control" value={this.state.city} onChange={this.changeHandler} />
+                                <MyInput type="text" name="city" label="Miasto" className="form-control" value={this.state.city} onChange={this.changeHandler} error={this.state.errors.cityError} />
                             </Col>
                             <Col xs={12} md={4}>
-                                <MySelect name="paymentType" label="Rodzaj płatności" className="form-select" onChange={this.changeHandler} value={this.state.paymentType} options={this.paymentOption} />
+                                <MySelect name="paymentType" label="Rodzaj płatności" className="form-select" onChange={this.changeHandler} value={this.state.paymentType} options={this.paymentOption} error={this.state.errors.paymentTypeError} />
                             </Col>
                             <Col xs={12} md={4}>
                                 <MyTextArea name="comment" label="Komentarz" className="form-control" onChange={this.changeHandler} value={this.state.comment} />
                             </Col>
                             <Col xs={12} md={4}>
                                 <MyInput type="checkbox" name="gift" label="Czy zapakować na prezent?" className="form-check-input" onChange={this.changeHandler} checked={this.state.gift} />
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col>
+                                <MyInput type="submit" className="btn btn-primary btn-lg btn-block" value="Wyślij" />
                             </Col>
                         </Row>
                     </div>

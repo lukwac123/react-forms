@@ -5,7 +5,7 @@ const MyInput = props => {
     const { type, label, name, value, className, onChange, error } = props;
     return (
         <div>
-            <label htmlFor={name}>{label}: </label>
+            <label htmlFor={name}>{label} {type !== "submit" ? ":" : ""} </label>
             <input type={type} id={name} name={name} value={value} className={className} onChange={onChange} />
             {error && (
                 <small className="alert alert-danger form-text text-muted">{error}</small>
@@ -15,8 +15,8 @@ const MyInput = props => {
 }
 
 MyInput.propTypes = {
-    label: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
+    label: PropTypes.string,
+    name: PropTypes.string,
     type: PropTypes.string.isRequired,
     value: PropTypes.string,
     className: PropTypes.string,
