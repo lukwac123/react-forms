@@ -1,8 +1,21 @@
 import React from "react";
-import { Formik, Field, Form } from "formik";
+import { Formik, Form, useField, useFormikContext } from "formik";
 import { Row, Col, Container } from "react-bootstrap";
+import MySelect from "../components/formikForms/MySelect";
+import MyInput from "../components/formikForms/MyInput";
+import MyCheckbox from "../components/formikForms/MyCheckbox";
+import MyTextarea from "../components/formikForms/MyTextarea";
 
-const MyFormik = ({ props }) => {
+
+const FormikCheckout = ({ props }) => {
+
+    const paymentOptions = [
+        {id: "-", name: "----"},
+        {id: "pp", name: "PayPal"},
+        {id: "stripe", name: "Stripe"},
+        {id: "cc", name: "Karta kredytowa"}
+    ];
+
     return (
         <Container>
             <Row>
@@ -15,28 +28,45 @@ const MyFormik = ({ props }) => {
                 initialValues={{
                     firstname: "",
                     lastname: "",
-                    street: ""
+                    street: "",
+                    zip: "",
+                    city: "",
+                    paymentType: "",
+                    comment: "",
+                    gift: false
                 }}
                 onSubmit={ values => {
                     console.log(values);
                 }}
             >
-                <Form>
+                <Form className="w-100">
                     <Row>
                         <Col xs={12} md={4}>
-                            <label htmlFor="firstname">Imię</label>
-                            <Field name="firstname" id="firstname" className="form-control" />
+                            <MyInput label="Imię" name="firstname" type="text" className="form-control" />
                         </Col>
                         <Col xs={12} md={4}>
-                            <label htmlFor="lastname">Nazwisko</label>
-                            <Field name="lastname" id="lastname" className="form-control" />
+                            <MyInput label="Nazwisko" name="lastname" type="text" className="form-control" />
                         </Col>
                         <Col xs={12} md={4}>
-                            <label htmlFor="street">Ulica</label>
-                            <Field name="street" id="street" className="form-control" />
+                            <MyInput label="Ulica i numer domu" name="street" type="text" className="form-control" />
                         </Col>
-                        <Col xs={12} className="mt-2">
-                            <button type="submit" className="btn btn-primary btn-lg btn-block">Wyślij</button>
+                        <Col xs={12} md={4}>
+                            <MyInput label="Kod pocztowy" name="zip" type="text" className="form-control" />
+                        </Col>
+                        <Col xs={12} md={4}>
+                            <MyInput label="Miasto" name="city" type="text" className="form-control" />
+                        </Col>
+                        <Col xs={12} md={4}>
+                            <MySelect label="Rodzaj płatności" name="paymentType" className="form-select" options={paymentOptions} />
+                        </Col>
+                        <Col xs={12} md={4}>
+                            <MyTextarea label="Komentarz" name="comment" className="form-control" />
+                        </Col>
+                        <Col xs={12} md={4}>
+                            <MyCheckbox name="gift" className="form-check-input" label="Zapakować na prezent?" />
+                        </Col>
+                        <Col xs={12}>
+                            <button type="submit" className="btn btn-primary btn-lg btn-block mt-2">Wyślij</button>
                         </Col>
                     </Row>
                 </Form>
@@ -45,4 +75,4 @@ const MyFormik = ({ props }) => {
     );
 };
 
-export default MyFormik;
+export default FormikCheckout;

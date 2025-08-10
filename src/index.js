@@ -2,12 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import reportWebVitals from './reportWebVitals';
 // import Checkout from './pages/checkout';
-import MyFormik from './pages/Formik';
+import FormikCheckout from './pages/Formik';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <MyFormik />
+    <FormikCheckout />
   </React.StrictMode>
 );
 
