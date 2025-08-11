@@ -1,19 +1,20 @@
 import React from "react";
-import { Formik, Form, useField, useFormikContext } from "formik";
+import { Formik, Form } from "formik";
 import { Row, Col, Container } from "react-bootstrap";
 import MySelect from "../components/formikForms/MySelect";
 import MyInput from "../components/formikForms/MyInput";
 import MyCheckbox from "../components/formikForms/MyCheckbox";
 import MyTextarea from "../components/formikForms/MyTextarea";
+import * as Yup from "yup";
 
 
-const FormikCheckout = ({ props }) => {
+const FormikCheckout = (props) => {
 
     const paymentOptions = [
-        {id: "-", name: "----"},
-        {id: "pp", name: "PayPal"},
-        {id: "stripe", name: "Stripe"},
-        {id: "cc", name: "Karta kredytowa"}
+        {id: "", name: "----"},
+        {id: "PayPal", name: "PayPal"},
+        {id: "Stripe", name: "Stripe"},
+        {id: "Karta kredytowa", name: "Karta kredytowa"}
     ];
 
     return (
@@ -35,6 +36,42 @@ const FormikCheckout = ({ props }) => {
                     comment: "",
                     gift: false
                 }}
+
+                validationSchema={Yup.object({
+                    firstname: Yup.string()
+                    .min(2, "Imię musi posiadać minimum dwa znaki")
+                    .max(15, "Imię może posiadać maksimum 15 znaków")
+                    .required("Pole wymagane"),
+
+                    lastname: Yup.string()
+                    .min(2, "Nazwisko musi posiadać minimum dwa znaki")
+                    .max(15, "Nazwisko może posiadać maksimum 15 znaków")
+                    .required("Pole wymagane"),
+
+                    street: Yup.string()
+                    .min(2, "Ulica musi posiadać minimum dwa znaki")
+                    .max(15, "Ulica może posiadać maksimum 15 znaków")
+                    .required("Pole wymagane"),
+
+                    zip: Yup.string()
+                    .min(2, "Kod pocztowy musi posiadać minimum dwa znaki")
+                    .max(15, "Kod pocztowy może posiadać maksimum 15 znaków")
+                    .required("Pole wymagane"),
+
+                    city: Yup.string()
+                    .min(2, "Miasto musi posiadać minimum dwa znaki")
+                    .max(15, "Miasto może posiadać maksimum 15 znaków")
+                    .required("Pole wymagane"),
+
+                    gift: Yup.boolean().required("Pole wymagane"),
+
+                    paymentType: Yup.string()
+                    .oneOf(
+                        ["Stripe", "PayPal", "Karta kredytowa"],
+                    )
+                    .required("Pole wymagane")
+                })}
+
                 onSubmit={ values => {
                     console.log(values);
                 }}

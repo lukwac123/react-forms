@@ -1,4 +1,3 @@
-import PropTypes from "prop-types";
 import { useField } from "formik";
 
 const MySelect = ({ label, ...props }) => {
