@@ -7,25 +7,28 @@ class Users extends Component {
         this.state = {
             error: null,
             isLoaded: false,
-            users: []
+            users: [],
+            total_pages: 0,
+            page: 1
         };
     }
 
-    componentDidMount() {
-        fetch("https://reqres.in/api/users/", {
+    fetchUsers = (id) => {
+        fetch(`https://reqres.in/api/users?page=${id}`, {
             headers: {
                 "x-api-key": "reqres-free-v1"
             }
         })
             .then(res => res.json())
             .then(
-                result => {
+                (result) => {
                     this.setState({
                         isLoaded: true,
-                        users: Array.isArray(result.data) ? result.data : []
+                        users: Array.isArray(result.data) ? result.data : [],
+                        total_pages: result.total_pages || 0
                     });
                 },
-                error => {
+                (error) => {
                     this.setState({
                         isLoaded: true,
                         error
@@ -34,8 +37,51 @@ class Users extends Component {
             );
     }
 
+    componentDidMount() {
+        this.fetchUsers(this.state.page);
+    }
+
+    updatePage = (id) => {
+        this.setState({ page: id }, () => this.fetchUsers(id));
+    };
+
+    renderPagination = () => {
+        let pagination = [];
+        for (let i = 1; i <= this.state.total_pages; i++) {
+            pagination.push(
+                <li
+                    key={i}
+                    className={i === this.state.page ? "active page-item" : "page-item"}
+                >
+                    <button
+                        className="page-link"
+                        onClick={() => this.updatePage(i)}
+                        style={{ cursor: "pointer" }}
+                    >
+                        {i}
+                    </button>
+                </li>
+            );
+        }
+        return pagination;
+    };
+
+    renderList = () => {
+        return this.state.users.map(user => (
+            <Col md={4} key={user.id}>
+                <div className="card mt-2">
+                    <img className="card-img-top" src={user.avatar} alt={user.first_name} />
+                    <div className="card-body">
+                        <h5 className="card-title">{user.first_name}</h5>
+                        <p className="card-text">{user.email}</p>
+                    </div>
+                </div>
+            </Col>
+        ));
+    };
+
     render() {
-        const { error, isLoaded, users } = this.state;
+        const { error, isLoaded } = this.state;
 
         if (error) {
             return <div>Błąd: {error.message}</div>;
@@ -45,18 +91,11 @@ class Users extends Component {
             return (
                 <Container>
                     <Row>
-                        {users.map(user => (
-                            <Col md={4} key={user.id}>
-                                <div className="card mt-2">
-                                    <img className="card-img-top" src={user.avatar} alt="Card img cap" />
-                                    <div className="card-body">
-                                        <h5 className="card-title">{user.first_name}</h5>
-                                        <p className="card-text">{user.email}</p>
-                                    </div>
-                                </div>
-                            </Col>
-                        ))}
+                        {this.renderList()}
                     </Row>
+                    <nav aria-label="Page navigation example">
+                        <ul className="pagination">{this.renderPagination()}</ul>
+                    </nav>
                 </Container>
             );
         }
