@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Row, Col, Container } from "react-bootstrap";
 
 class Users extends Component {
     constructor(props) {
@@ -42,15 +43,21 @@ class Users extends Component {
             return <div>Ładowanie...</div>;
         } else {
             return (
-                <>
-                    {users.map(user => (
-                        <div key={user.id}>
-                            <p><strong>{user.first_name}</strong></p>
-                            <p>{user.email}</p>
-                            <img src={user.avatar} alt={user.first_name} />
-                        </div>
-                    ))}
-                </>
+                <Container>
+                    <Row>
+                        {users.map(user => (
+                            <Col md={4} key={user.id}>
+                                <div className="card mt-2">
+                                    <img className="card-img-top" src={user.avatar} alt="Card img cap" />
+                                    <div className="card-body">
+                                        <h5 className="card-title">{user.first_name}</h5>
+                                        <p className="card-text">{user.email}</p>
+                                    </div>
+                                </div>
+                            </Col>
+                        ))}
+                    </Row>
+                </Container>
             );
         }
     }
