@@ -3,12 +3,13 @@ import ReactDOM from 'react-dom/client';
 import reportWebVitals from './reportWebVitals';
 // import Checkout from './pages/checkout';
 // import FormikCheckout from './pages/Formik';
-import Users from './pages/Users';
+// import Users from './pages/Users';
+import Add from './pages/AddUser';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <Users />
+    <Add />
   </React.StrictMode>
 );
 
